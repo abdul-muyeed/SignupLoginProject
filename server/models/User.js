@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema(
     },
     profile_picture: {
       type: String,
-      default: "https://drive.google.com/file/d/1yBogLzqarEk_FjdRUovyY6J3NVDhxDqJ/view?usp=drive_link",
+      default:
+        "https://drive.google.com/file/d/1yBogLzqarEk_FjdRUovyY6J3NVDhxDqJ/view?usp=drive_link",
     },
     email: {
       type: String,
@@ -24,7 +25,15 @@ const userSchema = new mongoose.Schema(
     verified: {
       type: Boolean,
       default: false,
-    }
+    },
+    verification_code: {
+      token: {
+        type: String,
+      },
+      expire: {
+        type: Date,
+      },
+    },
   },
   {
     timestamps: true,

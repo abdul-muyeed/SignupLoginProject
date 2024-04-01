@@ -1,5 +1,5 @@
 import { Strategy } from "passport-local";
-import User from "../models/User.js";
+import User from "../models/user.js";
 import passport from "passport";
 import { comparePassword } from "../configs/hashPassword.js";
 

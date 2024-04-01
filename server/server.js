@@ -7,10 +7,16 @@ import bodyParser from "body-parser";
 import "./strategies/localStrategy.js";
 import AuthRouter from "./routes/auth.js";
 import UserRouter from "./routes/user.js";
-import User from "./models/User.js"; 
+import User from "./models/user.js";
+import cors from "cors";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
