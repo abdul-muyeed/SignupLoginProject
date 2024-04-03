@@ -1,8 +1,11 @@
-export const profile = async (req, res) => {
-    console.log("profile", req.user);
+export const profile = async (req, res, next) => {
+  try {
     if (req.isAuthenticated()) {
-        return res.status(200).json(req.user);
+      return res.status(200).json({ ...req.user.toObject() , loggedIn: true });
     } else {
-        return res.status(401).json({ message: "unauthorized" });
+      return next({ message: "Unauthorized", status: 401 });
     }
-}
+  } catch (err) {
+    return next(err);
+  }
+};

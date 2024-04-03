@@ -6,11 +6,12 @@ export const alertSlice = createSlice({
   name: "alert",
   initialState,
   reducers: {
-    toggle: (state) => {
-      state.value = !state.value;
+    setvalue: (state, action) => {
+        console.log(action.payload);
+      state.value = action.payload;
     },
   },
 });
 
-export const { toggle } = alertSlice.actions;
+export const { toggle, setvalue } = alertSlice.actions;
 export default alertSlice.reducer;

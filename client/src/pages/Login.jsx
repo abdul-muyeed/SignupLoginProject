@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Grid,
@@ -19,16 +19,16 @@ import {
 import { useLoginMutation } from "../services/apiSlice";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { toggle } from "../services/modalSlice";
-import { toggle as alertToggle } from "../services/alertSlice";
-import BasicModal from "../components/Model";
+import { setvalue } from "../services/alertSlice";
 import Loader from "../components/Loader";
 import AlertMessage from "../components/AlertMessage";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [user, setUser] = useState({ email: "", password: "" });
+  const [alert, setAlertValue] = useState({ error: "", severity: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const [login, { isLoading, isError, error }] = useLoginMutation();
+  const [login, { isLoading, isError }] = useLoginMutation();
   const dispatch = useDispatch();
   let name, value;
   const handleInput = (e) => {
@@ -39,12 +39,21 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { data, error } = await login(user);
+    console.log(data);
+    console.log(error);
     if (data) {
-      console.log("login success", data);
+      dispatch(setvalue(true));
+
+      setAlertValue({ message: "Login Successful", severity: "success" });
+      navigate("/");  
     }
     if (error) {
-      dispatch(alertToggle());
-      console.log("login error", error);
+      dispatch(setvalue(true));
+      if (error?.status === 406) {
+        setAlertValue({ message: error?.data?.message, severity: "info" });
+      } else {
+        setAlertValue({ message: error?.data?.message, severity: "error" });
+      }
     }
   };
 
@@ -59,11 +68,10 @@ export default function Login() {
   };
   console.log(isError);
   if (isLoading) return <Loader />;
-  // if (isError) ;
 
   return (
     <>
-      <AlertMessage message={error?.data?.message} severity={"error"} />
+      <AlertMessage data={alert} />
       <Grid container justifyContent="center" alignItems="center">
         <Paper elevation={12} style={pageStyle}>
           <Grid align={"center"}>
@@ -82,6 +90,7 @@ export default function Login() {
                   label="Email"
                   placeholder="s2100000000@ru.ac.bd"
                   variant="standard"
+                  type="email"
                   fullWidth
                   required
                   value={user.email}
@@ -145,5 +154,3 @@ export default function Login() {
     </>
   );
 }
-
-

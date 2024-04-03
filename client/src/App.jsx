@@ -6,35 +6,36 @@ import ConfirmMail from "./pages/ConfirmMail.jsx";
 import VerifymMail from "./pages/VerifyMail.jsx";
 import ForgotPassword from "./pages/ForgotPassword.jsx";
 import ResetPassword from "./pages/ResetPassword.jsx";
+import VerifyUser from "./components/VerifyUser.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <VerifyUser><Home /></VerifyUser> ,
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <VerifyUser><Login /></VerifyUser>,
   },
   {
     path: "/register",
-    element: <Register />,
+    element:<VerifyUser><Register /></VerifyUser> ,
   },
   {
     path: "/confirm",
-    element: <ConfirmMail />,
+    element: <VerifyUser><ConfirmMail /></VerifyUser>,
   },
   {
     path: "/verify",
-    element: <VerifymMail />,
+    element: <VerifyUser><VerifymMail /></VerifyUser>,
   },
   {
     path: "/forgotpassword",
-    element: <ForgotPassword />,
+    element: <VerifyUser><ForgotPassword /></VerifyUser>,
   },
   {
     path: "/resetpassword",
-    element: <ResetPassword />,
+    element: <VerifyUser><ResetPassword /></VerifyUser>,
   },
   {
     path: "*",

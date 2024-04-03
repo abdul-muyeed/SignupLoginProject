@@ -81,4 +81,6 @@ export const {
   useVerifyMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,
+  useSignUpMutation,
+  useLogoutQuery
 } = apiSlice;

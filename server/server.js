@@ -12,11 +12,13 @@ import cors from "cors";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 const app = express();
-app.use(cors({
-  origin: "http://localhost:5173",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,7 +27,13 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
+  const user = await User.findById(id, {
+    password: 0,
+    __v: 0,
+    createdAt: 0,
+    updatedAt: 0,
+    verification_code: 0,
+  });
   console.log("deserialize user", user);
   done(null, user);
 });
@@ -69,6 +77,7 @@ app.use("/user", UserRouter);
 // });
 
 app.use((err, req, res, next) => {
+  console.log(err);
   const status = err.status || 500;
   const message = err.message || "Something went wrong";
   return res.status(status).json({

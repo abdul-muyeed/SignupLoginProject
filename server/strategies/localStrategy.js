@@ -11,15 +11,18 @@ export default passport.use(
       // passReqToCallback: true,
     },
     async (username, password, done) => {
-      console.log("username", username, "password", password, "done", done);
-      const user = await User.findOne({ email: username });
-      if (!user) {
-        return done(null, false);
+      try {
+        const user = await User.findOne({ email: username });
+        if (!user) {
+          return done(null, false);
+        }
+        if (comparePassword(password, user.password) === false) {
+          return done({status:401, message:"Wrong password"}, null);
+        }
+        return done(null, user);
+      } catch (err) {
+        return done(err);
       }
-      if (comparePassword(password, user.password) === false) {
-        return done("Password Wrong", null);
-      }
-      return done(null, user);
     }
   )
 );
